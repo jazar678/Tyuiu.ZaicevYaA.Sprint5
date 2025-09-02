@@ -32,6 +32,7 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3
                 else
                 {
                     Console.WriteLine("Файл не существует!");
+                    return;
                 }
 
                 Console.WriteLine("***************************************************************************");
@@ -39,7 +40,7 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3
                 Console.WriteLine("***************************************************************************");
 
                 double result = ds.LoadFromDataFile(path);
-                Console.WriteLine($"Сумма всех чисел в файле = {result}");
+                Console.WriteLine($"Сумма всех целых чисел в файле = {result}");
             }
             catch (Exception e)
             {

@@ -39,12 +39,7 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3.Lib
                             // Проверяем, является ли число целым
                             if (Math.Abs(number % 1) < double.Epsilon)
                             {
-                                sum += number; // Целое число - добавляем как есть
-                            }
-                            else
-                            {
-                                // Вещественное число - округляем до 3 знаков
-                                sum += Math.Round(number, 3);
+                                sum += number; // Добавляем только целые числа
                             }
                         }
                     }

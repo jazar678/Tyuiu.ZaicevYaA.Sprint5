@@ -11,28 +11,38 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3.Lib
         {
             double sum = 0;
 
-            using (StreamReader reader = new StreamReader(path))
+            try
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                using (StreamReader reader = new StreamReader(path))
                 {
-                    line = line.Trim();
-
-                    if (!string.IsNullOrEmpty(line))
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        // Заменяем запятую на точку для корректного парсинга
-                        string normalizedLine = line.Replace(',', '.');
+                        // Разделяем строку на значения по пробелам
+                        string[] values = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
 
-                        if (double.TryParse(normalizedLine, NumberStyles.Any, CultureInfo.InvariantCulture, out double number))
+                        foreach (string value in values)
                         {
-                            // Проверяем, является ли число целым
-                            if (Math.Abs(number % 1) < 0.000001)
+                            if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double number))
                             {
-                                sum += number;
+                                // Если число целое, добавляем как есть
+                                if (number == Math.Floor(number))
+                                {
+                                    sum += number;
+                                }
+                                else // Если вещественное, округляем до 3 знаков
+                                {
+                                    sum += Math.Round(number, 3);
+                                }
                             }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при чтении файла: {ex.Message}");
+                throw;
             }
 
             return sum;

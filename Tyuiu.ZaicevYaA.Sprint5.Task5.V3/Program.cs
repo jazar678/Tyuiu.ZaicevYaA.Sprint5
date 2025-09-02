@@ -34,7 +34,7 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3
                 double result = ds.LoadFromDataFile(tempFilePath);
 
                 Console.WriteLine("Результат: " + result);
-                Console.WriteLine("Ожидалось: 35.0");
+             
             }
             catch (Exception ex)
             {

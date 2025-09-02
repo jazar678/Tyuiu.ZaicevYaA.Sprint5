@@ -11,39 +11,31 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3.Lib
         {
             double sum = 0;
 
-            try
+            using (StreamReader reader = new StreamReader(path))
             {
-                using (StreamReader reader = new StreamReader(path))
+                string line;
+                while ((line = reader.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        // Убираем лишние пробелы
-                        line = line.Trim();
+                    line = line.Trim();
 
-                        if (!string.IsNullOrEmpty(line))
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        // Заменяем запятую на точку для корректного парсинга
+                        string normalizedLine = line.Replace(',', '.');
+
+                        if (double.TryParse(normalizedLine, NumberStyles.Any, CultureInfo.InvariantCulture, out double number))
                         {
-                            // Пытаемся распарсить число
-                            if (double.TryParse(line, NumberStyles.Any, CultureInfo.InvariantCulture, out double number))
+                            // Проверяем, является ли число целым
+                            if (Math.Abs(number % 1) < 0.000001)
                             {
-                                // Проверяем, является ли число целым
-                                if (Math.Abs(number % 1) < double.Epsilon)
-                                {
-                                    // Добавляем только целые числа
-                                    sum += number;
-                                }
-                                // Вещественные числа игнорируем (не добавляем к сумме)
+                                sum += number;
                             }
                         }
                     }
                 }
+            }
 
-                return sum;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ошибка при чтении файла: {ex.Message}");
-            }
+            return sum;
         }
     }
 }

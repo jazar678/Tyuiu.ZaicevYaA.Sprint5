@@ -29,7 +29,8 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3.Lib
                         // Целое число не должно содержать запятых или точек
                         if (!line.Contains(',') && !line.Contains('.'))
                         {
-                            if (int.TryParse(line, out int integerNumber))
+                            // Пытаемся распарсить как целое число (включая отрицательные)
+                            if (int.TryParse(line, NumberStyles.Integer, CultureInfo.InvariantCulture, out int integerNumber))
                             {
                                 sum += integerNumber;
                             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Tyuiu.ZaicevYaA.Sprint5.Task1.V7.Lib;
 
 namespace Tyuiu.ZaicevYaA.Sprint5.Task1.V7
@@ -24,16 +25,38 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task1.V7
 
             string res = ds.SaveToFileTextData(startValue, stopValue);
 
-            // Вывод результатов в консоль (только числовые значения)
+            // Вывод результатов в консоль
             for (int x = startValue; x <= stopValue; x++)
             {
                 double result = CalculateFunction(x);
-                Console.WriteLine($"{result:F2}".Replace(",", "."));
+                string formattedResult = FormatResult(result);
+                Console.WriteLine(formattedResult);
             }
 
             Console.WriteLine("Файл: " + res);
             Console.WriteLine("Создан!");
             Console.ReadKey();
+        }
+
+        private static string FormatResult(double result)
+        {
+            // Округляем до двух знаков
+            result = Math.Round(result, 2);
+
+            // Преобразуем в строку с запятой
+            string resultStr = result.ToString("F2", CultureInfo.GetCultureInfo("ru-RU"));
+
+            // Убираем лишние нули после запятой
+            if (resultStr.Contains(","))
+            {
+                resultStr = resultStr.TrimEnd('0');
+                if (resultStr.EndsWith(","))
+                {
+                    resultStr = resultStr.TrimEnd(',');
+                }
+            }
+
+            return resultStr;
         }
 
         private static double CalculateFunction(int x)

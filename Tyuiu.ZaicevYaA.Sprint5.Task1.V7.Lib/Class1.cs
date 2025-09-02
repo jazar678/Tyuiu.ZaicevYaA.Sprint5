@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Globalization;
 using tyuiu.cources.programming.interfaces.Sprint5;
 
 namespace Tyuiu.ZaicevYaA.Sprint5.Task1.V7.Lib
@@ -16,12 +17,35 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task1.V7.Lib
                 for (int x = startValue; x <= stopValue; x++)
                 {
                     double result = CalculateFunction(x);
-                    // Записываем только числовые значения с двумя знаками после запятой
-                    writer.WriteLine($"{result:F2}".Replace(",", ".")); // Используем точку как разделитель
+
+                    // Форматируем с запятой и убираем лишние нули
+                    string formattedResult = FormatResult(result);
+                    writer.WriteLine(formattedResult);
                 }
             }
 
             return path;
+        }
+
+        private string FormatResult(double result)
+        {
+            // Округляем до двух знаков
+            result = Math.Round(result, 2);
+
+            // Преобразуем в строку с запятой
+            string resultStr = result.ToString("F2", CultureInfo.GetCultureInfo("ru-RU"));
+
+            // Убираем лишние нули после запятой
+            if (resultStr.Contains(","))
+            {
+                resultStr = resultStr.TrimEnd('0');
+                if (resultStr.EndsWith(","))
+                {
+                    resultStr = resultStr.TrimEnd(',');
+                }
+            }
+
+            return resultStr;
         }
 
         private double CalculateFunction(int x)

@@ -8,31 +8,46 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("***************************************************************************");
-            Console.WriteLine("* ИСХОДНЫЕ ДАННЫЕ:                                                        *");
-            Console.WriteLine("***************************************************************************");
-
             // Создаем временный файл с тестовыми данными
-            string tempFile = Path.GetTempFileName();
-            using (StreamWriter writer = new StreamWriter(tempFile))
+            string tempFilePath = Path.GetTempFileName();
+
+            try
             {
-                writer.WriteLine("10 20.5678 30 40.123456 50");
-                writer.WriteLine("15.999 25 35.5 45 55.123");
+                // Записываем тестовые данные в файл (пример, который должен дать сумму 35)
+                using (StreamWriter writer = new StreamWriter(tempFilePath))
+                {
+                    writer.WriteLine("10");      // целое - добавляем
+                    writer.WriteLine("3.14159"); // вещественное - игнорируем
+                    writer.WriteLine("15");      // целое - добавляем
+                    writer.WriteLine("7.888");   // вещественное - игнорируем
+                    writer.WriteLine("10");      // целое - добавляем
+                    writer.WriteLine("2.71828"); // вещественное - игнорируем
+                    // Итого: 10 + 15 + 10 = 35
+                }
+
+                Console.WriteLine("Файл создан: " + tempFilePath);
+                Console.WriteLine("Содержимое файла:");
+                Console.WriteLine(File.ReadAllText(tempFilePath));
+
+                // Вычисляем сумму
+                DataService ds = new DataService();
+                double result = ds.LoadFromDataFile(tempFilePath);
+
+                Console.WriteLine("Результат: " + result);
+                Console.WriteLine("Ожидалось: 35.0");
             }
-
-            Console.WriteLine($"Файл: {tempFile}");
-            Console.WriteLine("***************************************************************************");
-            Console.WriteLine("* РЕЗУЛЬТАТ:                                                              *");
-            Console.WriteLine("***************************************************************************");
-
-            DataService ds = new DataService();
-            double result = ds.LoadFromDataFile(tempFile);
-
-            Console.WriteLine($"Сумма всех чисел (вещественные округлены до 3 знаков) = {result}");
-            Console.WriteLine("***************************************************************************");
-
-            // Удаляем временный файл
-            File.Delete(tempFile);
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка: " + ex.Message);
+            }
+            finally
+            {
+                // Удаляем временный файл
+                if (File.Exists(tempFilePath))
+                {
+                    File.Delete(tempFilePath);
+                }
+            }
 
             Console.ReadKey();
         }

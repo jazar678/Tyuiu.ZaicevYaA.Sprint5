@@ -24,14 +24,14 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task7.V25.Test
         {
             // Создаем временный файл с тестовыми данными
             string tempFile = Path.GetTempFileName();
-            string testContent = "Hello мир World 123 Привет Test данные Data 456";
+            string testContent = "Hello, Мир! This is a Test. Данные 123 Data.";
             File.WriteAllText(tempFile, testContent, System.Text.Encoding.UTF8);
 
             DataService ds = new DataService();
             string resultFile = ds.LoadDataAndSave(tempFile);
 
             string resultContent = File.ReadAllText(resultFile, System.Text.Encoding.UTF8);
-            string expected = " мир  123 Привет  данные  456";
+            string expected = ", Мир! . Данные 123 .";
 
             // Удаляем временные файлы
             File.Delete(tempFile);

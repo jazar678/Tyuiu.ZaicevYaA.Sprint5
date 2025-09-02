@@ -25,19 +25,13 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3.Lib
                         if (string.IsNullOrEmpty(line))
                             continue;
 
-                      
-
-                        // Пытаемся распарсить число
-                        if (double.TryParse(line, NumberStyles.Any, CultureInfo.InvariantCulture, out double number))
+                        // Проверяем, является ли строка целым числом
+                        // Целое число не должно содержать запятых или точек
+                        if (!line.Contains(',') && !line.Contains('.'))
                         {
-                            // Если число целое, добавляем как есть
-                            if (number % 1 == 0)
+                            if (int.TryParse(line, out int integerNumber))
                             {
-                                sum += number;
-                            }
-                            else // Если вещественное, округляем до 3 знаков
-                            {
-                                sum += Math.Round(number, 3);
+                                sum += integerNumber;
                             }
                         }
                     }

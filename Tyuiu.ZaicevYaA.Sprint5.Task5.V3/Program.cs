@@ -8,7 +8,7 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3
     {
         static void Main(string[] args)
         {
-            // Создаем путь к файлу (используем указанный путь C:\DataSpirit5\)
+            // Создаем путь к файлу
             string path = Path.Combine("C:", "DataSprint5", "InPutDataFileTask5V3.txt");
 
             DataService ds = new DataService();
@@ -24,7 +24,7 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3
             try
             {
                 double result = ds.LoadFromDataFile(path);
-                Console.WriteLine($"Сумма всех чисел в файле = {result:F3}");
+                Console.WriteLine($"Сумма всех целых чисел в файле = {result}");
             }
             catch (Exception ex)
             {

@@ -18,22 +18,26 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3.Lib
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        // Разделяем строку на значения по пробелам
-                        string[] values = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                        // Убираем лишние пробелы
+                        line = line.Trim();
 
-                        foreach (string value in values)
+                        // Пропускаем пустые строки
+                        if (string.IsNullOrEmpty(line))
+                            continue;
+
+                      
+
+                        // Пытаемся распарсить число
+                        if (double.TryParse(line, NumberStyles.Any, CultureInfo.InvariantCulture, out double number))
                         {
-                            if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double number))
+                            // Если число целое, добавляем как есть
+                            if (number % 1 == 0)
                             {
-                                // Если число целое, добавляем как есть
-                                if (number == Math.Floor(number))
-                                {
-                                    sum += number;
-                                }
-                                else // Если вещественное, округляем до 3 знаков
-                                {
-                                    sum += Math.Round(number, 3);
-                                }
+                                sum += number;
+                            }
+                            else // Если вещественное, округляем до 3 знаков
+                            {
+                                sum += Math.Round(number, 3);
                             }
                         }
                     }

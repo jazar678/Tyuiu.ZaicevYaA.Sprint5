@@ -17,12 +17,13 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task7.V25.Lib
                 // Читаем содержимое файла
                 string content = File.ReadAllText(path, Encoding.UTF8);
 
-                // Удаляем английские слова (слова, состоящие из латинских букв)
-                // Используем более точное регулярное выражение
+                // Удаляем английские слова, но сохраняем знаки препинания
                 string pattern = @"\b[a-zA-Z]+\b";
                 string result = Regex.Replace(content, pattern, "");
 
-                // Убираем лишние пробелы, которые могли образоваться после удаления слов
+                // Убираем лишние пробелы перед знаками препинания
+                result = Regex.Replace(result, @"\s+([.,!?;:])", "$1");
+                // Убираем множественные пробелы
                 result = Regex.Replace(result, @"\s+", " ");
                 result = result.Trim();
 

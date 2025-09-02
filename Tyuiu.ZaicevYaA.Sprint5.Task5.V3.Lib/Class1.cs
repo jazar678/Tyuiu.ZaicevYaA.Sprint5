@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using tyuiu.cources.programming.interfaces.Sprint5;
-
-usinusing System;
+﻿using System;
 using System.IO;
 using System.Globalization;
 using tyuiu.cources.programming.interfaces.Sprint5;

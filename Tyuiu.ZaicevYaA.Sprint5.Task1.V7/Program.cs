@@ -24,14 +24,11 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task1.V7
 
             string res = ds.SaveToFileTextData(startValue, stopValue);
 
-            // Вывод результатов в консоль
-            Console.WriteLine("   x   |   F(x)   ");
-            Console.WriteLine("-------------------");
-
+            // Вывод результатов в консоль (только числовые значения)
             for (int x = startValue; x <= stopValue; x++)
             {
                 double result = CalculateFunction(x);
-                Console.WriteLine($"{x,6} | {result,8:F2}");
+                Console.WriteLine($"{result:F2}".Replace(",", "."));
             }
 
             Console.WriteLine("Файл: " + res);
@@ -47,10 +44,9 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task1.V7
                 return 0;
             }
 
-            double numerator = Math.Sin(x);
-            double denominator = x + 1.2;
-            double term1 = numerator / denominator;
-            double term2 = Math.Sin(x) * 2;
+            double sinX = Math.Sin(x);
+            double term1 = sinX / (x + 1.2);
+            double term2 = sinX * 2;
             double term3 = 2 * x;
 
             return term1 - term2 - term3;

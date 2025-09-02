@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Tyuiu.ZaicevYaA.Sprint5.Task1.V7.Lib;
 
 namespace Tyuiu.ZaicevYaA.Sprint5.Task1.V7
@@ -8,62 +7,53 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task1.V7
     {
         static void Main(string[] args)
         {
-            Console.Title = "Спринт #5 | Выполнил: Зайцев Я.А. | ПКТб-24-1";
-            Console.WriteLine("***************************************************************************");
-            Console.WriteLine("* Спринт #5                                                               *");
-            Console.WriteLine("* Тема: Табулирование функции                                             *");
-            Console.WriteLine("* Задание #1                                                              *");
-            Console.WriteLine("* Вариант #7                                                              *");
-            Console.WriteLine("* Выполнил: Зайцев Ярослав Александрович | ПКТб-24-1                      *");
-            Console.WriteLine("***************************************************************************");
-            Console.WriteLine("* УСЛОВИЕ:                                                                *");
-            Console.WriteLine("* Дана функция: F(x) = sin(x)/(x+1.2) - sin(x)*2 - 2x                     *");
-            Console.WriteLine("* Произвести табулирование f(x) на диапазоне [-5; 5] с шагом 1.           *");
-            Console.WriteLine("* При делении на ноль вернуть значение 0. Результат сохранить в файл и    *");
-            Console.WriteLine("* вывести на консоль в таблицу. Округлить до двух знаков после запятой.   *");
-            Console.WriteLine("***************************************************************************");
-            Console.WriteLine("* ИСХОДНЫЕ ДАННЫЕ:                                                        *");
-            Console.WriteLine("***************************************************************************");
+            DataService ds = new DataService();
 
             int startValue = -5;
             int stopValue = 5;
 
-            Console.WriteLine($"Старт шага = {startValue}");
-            Console.WriteLine($"Конец шага = {stopValue}");
-
+            Console.WriteLine("***************************************************************************");
+            Console.WriteLine("* ИСХОДНЫЕ ДАННЫЕ:                                                        *");
+            Console.WriteLine("***************************************************************************");
+            Console.WriteLine($"Начало диапазона: {startValue}");
+            Console.WriteLine($"Конец диапазона: {stopValue}");
+            Console.WriteLine($"Шаг: 1");
             Console.WriteLine("***************************************************************************");
             Console.WriteLine("* РЕЗУЛЬТАТ:                                                              *");
             Console.WriteLine("***************************************************************************");
 
-            DataService ds = new DataService();
-            string path = ds.SaveToFileTextData(startValue, stopValue);
+            string res = ds.SaveToFileTextData(startValue, stopValue);
 
-            // Читаем и выводим содержимое файла на консоль
-            Console.WriteLine("Табулирование функции F(x) = sin(x)/(x+1.2) - sin(x)*2 - 2x");
-            Console.WriteLine("+----------+----------+");
-            Console.WriteLine("|    x     |   f(x)   |");
-            Console.WriteLine("+----------+----------+");
+            // Вывод результатов в консоль
+            Console.WriteLine("   x   |   F(x)   ");
+            Console.WriteLine("-------------------");
 
-            using (StreamReader reader = new StreamReader(path))
+            for (int x = startValue; x <= stopValue; x++)
             {
-                // Пропускаем первые 4 строки (заголовки)
-                for (int i = 0; i < 4; i++)
-                {
-                    reader.ReadLine();
-                }
-
-                // Выводим таблицу с результатами
-                string line;
-                while ((line = reader.ReadLine()) != null && line != "+----------+----------+")
-                {
-                    Console.WriteLine(line);
-                }
+                double result = CalculateFunction(x);
+                Console.WriteLine($"{x,6} | {result,8:F2}");
             }
 
-            Console.WriteLine("+----------+----------+");
-            Console.WriteLine($"Файл сохранен по пути: {path}");
-
+            Console.WriteLine("Файл: " + res);
+            Console.WriteLine("Создан!");
             Console.ReadKey();
+        }
+
+        private static double CalculateFunction(int x)
+        {
+            // Проверка деления на ноль
+            if (Math.Abs(x + 1.2) < 0.0001)
+            {
+                return 0;
+            }
+
+            double numerator = Math.Sin(x);
+            double denominator = x + 1.2;
+            double term1 = numerator / denominator;
+            double term2 = Math.Sin(x) * 2;
+            double term3 = 2 * x;
+
+            return term1 - term2 - term3;
         }
     }
 }

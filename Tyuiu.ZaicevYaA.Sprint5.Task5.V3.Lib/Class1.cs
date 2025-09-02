@@ -13,38 +13,49 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3.Lib
 
             try
             {
-                using (StreamReader reader = new StreamReader(path))
+                // Проверяем существование файла
+                if (!File.Exists(path))
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    throw new FileNotFoundException($"Файл не найден: {path}");
+                }
+
+                // Читаем все строки из файла
+                string[] lines = File.ReadAllLines(path);
+
+                foreach (string line in lines)
+                {
+                    // Пропускаем пустые строки
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
+
+                    // Разделяем строку на отдельные значения
+                    string[] values = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (string value in values)
                     {
-                        // Убираем лишние пробелы
-                        line = line.Trim();
-
-                        // Пропускаем пустые строки
-                        if (string.IsNullOrEmpty(line))
-                            continue;
-
-                        // Проверяем, является ли строка целым числом
-                        // Целое число не должно содержать запятых или точек
-                        if (!line.Contains(',') && !line.Contains('.'))
+                        // Пытаемся распарсить число
+                        if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double number))
                         {
-                            // Пытаемся распарсить как целое число (включая отрицательные)
-                            if (int.TryParse(line, NumberStyles.Integer, CultureInfo.InvariantCulture, out int integerNumber))
+                            // Проверяем, является ли число целым
+                            if (Math.Abs(number % 1) < double.Epsilon)
                             {
-                                sum += integerNumber;
+                                sum += number; // Целое число - добавляем как есть
+                            }
+                            else
+                            {
+                                // Вещественное число - округляем до 3 знаков
+                                sum += Math.Round(number, 3);
                             }
                         }
                     }
                 }
+
+                return sum;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка при чтении файла: {ex.Message}");
-                throw;
+                throw new Exception($"Ошибка при чтении файла: {ex.Message}");
             }
-
-            return sum;
         }
     }
 }

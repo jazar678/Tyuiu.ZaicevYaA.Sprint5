@@ -8,27 +8,42 @@ namespace Tyuiu.ZaicevYaA.Sprint5.Task5.V3
     {
         static void Main(string[] args)
         {
-            // Создаем путь к файлу
-            string path = Path.Combine(@"C:\DataSprint5", "InPutDataFileTask5V3.txt"); ;
-
             DataService ds = new DataService();
 
-            Console.WriteLine("***************************************************************************");
-            Console.WriteLine("* ИСХОДНЫЕ ДАННЫЕ:                                                        *");
-            Console.WriteLine("***************************************************************************");
-            Console.WriteLine($"Файл: {path}");
-            Console.WriteLine("***************************************************************************");
-            Console.WriteLine("* РЕЗУЛЬТАТ:                                                              *");
-            Console.WriteLine("***************************************************************************");
+            // Путь к файлу
+            string path = @"C:\DataSprint5\InPutDataFileTask5V3.txt";
 
             try
             {
+                Console.WriteLine("***************************************************************************");
+                Console.WriteLine("* ИСХОДНЫЕ ДАННЫЕ:                                                        *");
+                Console.WriteLine("***************************************************************************");
+                Console.WriteLine($"Файл: {path}");
+
+                if (File.Exists(path))
+                {
+                    Console.WriteLine("Содержимое файла:");
+                    string[] lines = File.ReadAllLines(path);
+                    foreach (string line in lines)
+                    {
+                        Console.WriteLine(line);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Файл не существует!");
+                }
+
+                Console.WriteLine("***************************************************************************");
+                Console.WriteLine("* РЕЗУЛЬТАТ:                                                              *");
+                Console.WriteLine("***************************************************************************");
+
                 double result = ds.LoadFromDataFile(path);
-                Console.WriteLine($"Сумма всех целых чисел в файле = {result}");
+                Console.WriteLine($"Сумма всех чисел в файле = {result}");
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine($"Ошибка: {ex.Message}");
+                Console.WriteLine($"Ошибка: {e.Message}");
             }
 
             Console.ReadKey();
